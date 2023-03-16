@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import uniqid from 'uniqid';
 import './App.css';
+import TodoList from './components/TodoList';
+import InputField from './components/InputField';
 
 function App() {
   const [todoList, setTodoList] = useState([]);
@@ -12,7 +14,7 @@ function App() {
         ...todoList,
         {
           id: uniqid(),
-          text,
+          text: text,
           completed: false,
         },
       ]);
@@ -20,23 +22,28 @@ function App() {
     }
   }
 
+  const removeTodo = (todoId) => {
+    setTodoList(todoList.filter(todo => todo.id !== todoId));
+  }
+
+  const toggleTodoComplete = (todoId) => {
+    setTodoList(
+      todoList.map(todo => {
+        if(todo.id !== todoId) {
+          return todo;
+        }
+        return {...todo, completed: !todo.completed};
+      })
+    )
+  }
+
   return (
     <div className="App">
-      <label>
-        <input value={text} onChange={(e) => setText(e.target.value)} />
-        <button onClick={addTodo}>Add Todo</button>
-      </label>
-      <ul>
-        {
-          todoList.map(todo => (
-            <li key={todo.id}>
-              <input type='checkbox' />
-              <span>{todo.text}</span>
-              <span style={{color: 'red'}}>&times;</span>
-            </li>
-          ))
-        }
-      </ul>
+      <InputField btnText='Add Todo' text={text} handleInput={setText} handleSubmit={addTodo} />
+      <TodoList
+        todoList={todoList}
+        removeTodo={removeTodo}
+        toggleTodoComplete={toggleTodoComplete} />
     </div>
   );
 }
