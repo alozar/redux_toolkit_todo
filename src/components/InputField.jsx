@@ -1,9 +1,9 @@
 import React from 'react'
 
-const InputField = ({text, btnText, handleInput, handleSubmit}) => {
+const InputField = ({title, btnText, handleInput, handleSubmit}) => {
   return (
     <label>
-        <input value={text} onChange={(e) => handleInput(e.target.value)} />
+        <input value={title} onChange={(e) => handleInput(e.target.value)} />
         <button onClick={handleSubmit}>{btnText}</button>
     </label>
   )
